@@ -1,5 +1,6 @@
-import java.io.File;
-import java.io.FileWriter;
+/**
+ * FRC Team 2199 Object Tracking Code for a co-processor
+ */
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +11,6 @@ import java.util.HashMap;
 import edu.wpi.first.vision.VisionPipeline;
 
 import org.opencv.core.*;
-import org.opencv.core.Core.*;
-import org.opencv.features2d.FeatureDetector;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.*;
 import org.opencv.objdetect.*;
