@@ -1,5 +1,6 @@
 /**
  * FRC Team 2199 Object Tracking Code for a co-processor
+ * @author Alex Pereira
  */
 import java.io.IOException;
 import java.io.FileWriter;
