@@ -1,7 +1,13 @@
-/**
- * FRC Team 2199 Object Tracking Code for a co-processor
- */
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 import java.io.IOException;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -23,7 +29,9 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.vision.VisionThread;
 
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 //import edu.wpi.first.wpilibj.vision.*;
@@ -217,7 +225,7 @@ public final class Main {
       return;
     }
 
-    //BufferedWriter writer = new BufferedWriter(new FileWriter("NetworkTable.txt"));
+    BufferedWriter writer = new BufferedWriter(new FileWriter("NetworkTable.txt"));
     // start NetworkTables
     NetworkTableInstance ntinst = NetworkTableInstance.getDefault();
     if (server) {
@@ -241,25 +249,22 @@ public final class Main {
               new ObjectTracking(), pipeline -> {
             if (!pipeline.filterContoursOutput().isEmpty()) {
                   Rect cameraFOV = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+                  Imgproc.circle(pipeline.maskOutput(), new Point(cameraFOV.x, cameraFOV.y), cameraFOV.width / 2, new Scalar(255, 0, 0));
                   synchronized (imgLock) {
-                    centerX = cameraFOV.x + (cameraFOV.width / 2);
-                    
+                    centerX = cameraFOV.x + (cameraFOV.width / 2);                   
                     NetworkTableEntry target = table.getEntry("CenterX");
                     target.setDouble(centerX);
-                    /*
+                    pipeline.filterContoursOutput().clear();
                     try {
-                      writer.write("CenterX : " + centerX + "\n");
-                      writer.write("X : " + cameraFOV.x + ", Width : " + cameraFOV.width + "\n");
+                      writer.write("CenterX : " + centerX + ", Count : " + pipeline.findContoursOutput().size() + "\n");
                       writer.flush();
                     }
                     catch (IOException ioe) {
                       ioe.printStackTrace();
                     }
-                    */
                   }
                 }
                 else {
-                  /*
                   try {
                     writer.write("Empty Count: " + count + "\n");
                     count++;
@@ -268,7 +273,6 @@ public final class Main {
                   catch (IOException ioe) {
                     ioe.printStackTrace();
                   }  
-                  */
                 }
       });
       /* something like this for GRIP:
