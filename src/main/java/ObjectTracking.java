@@ -1,6 +1,7 @@
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+/**
+ * Raspberry Pi Code for FRC Team 2199.
+ * @author Alex and Allwyn Pereira
+ */
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,8 +12,6 @@ import edu.wpi.first.vision.VisionPipeline;
 
 import org.opencv.core.*;
 import org.opencv.core.Core.*;
-import org.opencv.features2d.FeatureDetector;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.*;
 import org.opencv.objdetect.*;
 
@@ -280,8 +279,6 @@ public class ObjectTracking implements VisionPipeline {
 			output.add(contour);
 		}
 	}
-
-
-//hello
-
 }
+
+//End of the ObjectTracking class

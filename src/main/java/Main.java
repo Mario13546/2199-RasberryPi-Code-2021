@@ -1,10 +1,7 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
+/**
+ * Raspberry Pi Code for FRC Team 2199.
+ * @author Alex and Allwyn Pereira
+ */
 import java.io.IOException;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
@@ -91,7 +88,7 @@ public final class Main {
 
   private static NetworkTable table;
 
-  private static int count = 0;
+  //private static int count = 0;
 
   private Main() {
   }
@@ -225,7 +222,9 @@ public final class Main {
       return;
     }
 
-    BufferedWriter writer = new BufferedWriter(new FileWriter("NetworkTable.txt"));
+    //Create a buffered file writer (rPi must be in writable mode for this to work)
+    //BufferedWriter writer = new BufferedWriter(new FileWriter("NetworkTable.txt"));
+    
     // start NetworkTables
     NetworkTableInstance ntinst = NetworkTableInstance.getDefault();
     if (server) {
@@ -255,16 +254,16 @@ public final class Main {
                     NetworkTableEntry target = table.getEntry("CenterX");
                     target.setDouble(centerX);
                     pipeline.filterContoursOutput().clear();
-                    try {
+                    /*try {
                       writer.write("CenterX : " + centerX + ", Count : " + pipeline.findContoursOutput().size() + "\n");
                       writer.flush();
                     }
                     catch (IOException ioe) {
                       ioe.printStackTrace();
-                    }
+                    }*/
                   }
                 }
-                else {
+                /*else {
                   try {
                     writer.write("Empty Count: " + count + "\n");
                     count++;
@@ -273,7 +272,7 @@ public final class Main {
                   catch (IOException ioe) {
                     ioe.printStackTrace();
                   }  
-                }
+                }*/
       });
       /* something like this for GRIP:
       VisionThread visionThread = new VisionThread(cameras.get(0),
@@ -294,3 +293,5 @@ public final class Main {
     }
   }
 }
+
+//End of the Main class
