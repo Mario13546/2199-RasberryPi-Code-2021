@@ -3,8 +3,8 @@
  * @author Alex and Allwyn Pereira
  */
 import java.io.IOException;
-import java.io.FileWriter;
-import java.io.BufferedWriter;
+//import java.io.FileWriter;
+//import java.io.BufferedWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -88,7 +88,8 @@ public final class Main {
 
   private static NetworkTable table;
 
-  //private static int count = 0;
+  //private static int count;
+  private static int emptyCount = 0;
 
   private Main() {
   }
@@ -244,42 +245,44 @@ public final class Main {
 
     // start image processing on camera 0 if present
     if (cameras.size() >= 1) {
-      VisionThread visionThread = new VisionThread(cameras.get(0),
-              new ObjectTracking(), pipeline -> {
-            if (!pipeline.filterContoursOutput().isEmpty()) {
-                  Rect cameraFOV = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
-                  Imgproc.circle(pipeline.maskOutput(), new Point(cameraFOV.x, cameraFOV.y), cameraFOV.width / 2, new Scalar(255, 0, 0));
-                  synchronized (imgLock) {
-                    centerX = cameraFOV.x + (cameraFOV.width / 2);                   
-                    NetworkTableEntry target = table.getEntry("CenterX");
-                    target.setDouble(centerX);
-                    pipeline.filterContoursOutput().clear();
-                    /*try {
-                      writer.write("CenterX : " + centerX + ", Count : " + pipeline.findContoursOutput().size() + "\n");
-                      writer.flush();
-                    }
-                    catch (IOException ioe) {
-                      ioe.printStackTrace();
-                    }*/
-                  }
-                }
-                /*else {
-                  try {
-                    writer.write("Empty Count: " + count + "\n");
-                    count++;
-                    writer.flush();
-                  }
-                  catch (IOException ioe) {
-                    ioe.printStackTrace();
-                  }  
-                }*/
+      VisionThread visionThread = new VisionThread(cameras.get(0), new ObjectTracking(), pipeline -> {
+        if (!pipeline.filterContoursOutput().isEmpty()) {
+          Rect cameraFOV = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+          Imgproc.circle(pipeline.maskOutput(), new Point(cameraFOV.x, cameraFOV.y), cameraFOV.width / 2, new Scalar(255, 0, 0));
+          synchronized (imgLock) {
+            centerX = cameraFOV.x + (cameraFOV.width / 2);                   
+            NetworkTableEntry target = table.getEntry("CenterX");
+            target.setDouble(centerX);
+            pipeline.filterContoursOutput().clear();
+            /*try {
+              writer.write("CenterX : " + centerX + ", Count : " + pipeline.findContoursOutput().size() + "\n");
+              writer.flush();
+            }
+            catch (IOException ioe) {
+              ioe.printStackTrace();
+            }*/
+          }
+        }
+        else {
+          //Increaes the empty count
+          emptyCount++;
+
+          //Sets the value of the NetwtorkTable Entry
+          NetworkTableEntry empty = table.getEntry("empty");
+          empty.setDouble( (double)emptyCount );
+        }
+        /*else {
+          try {
+            writer.write("Empty Count: " + count + "\n");
+            count++;
+            writer.flush();
+          }
+          catch (IOException ioe) {
+            ioe.printStackTrace();
+          }  
+        }*/
       });
-      /* something like this for GRIP:
-      VisionThread visionThread = new VisionThread(cameras.get(0),
-              new GripPipeline(), pipeline -> {
-        ...
-      });
-       */
+
       visionThread.start();
     }
 

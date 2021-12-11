@@ -4,16 +4,16 @@
  */
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.HashMap;
+//import java.util.Map;
+//import java.util.stream.Collectors;
+//import java.util.HashMap;
 
 import edu.wpi.first.vision.VisionPipeline;
 
 import org.opencv.core.*;
-import org.opencv.core.Core.*;
+//import org.opencv.core.Core.*;
 import org.opencv.imgproc.*;
-import org.opencv.objdetect.*;
+//import org.opencv.objdetect.*;
 
 /**
 * GripPipeline class.
@@ -39,7 +39,8 @@ public class ObjectTracking implements VisionPipeline {
 	/**
 	 * This is the primary method that runs the entire pipeline and updates the outputs.
 	 */
-	@Override	public void process(Mat source0) {
+	@Override
+	public void process(Mat source0) {
 		// Step CV_resize0:
 		Mat cvResizeSrc = source0;
 		Size cvResizeDsize = new Size(0, 0);
