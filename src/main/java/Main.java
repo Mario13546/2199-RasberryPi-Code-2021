@@ -226,7 +226,7 @@ public final class Main {
     //Create a buffered file writer (rPi must be in writable mode for this to work)
     //BufferedWriter writer = new BufferedWriter(new FileWriter("NetworkTable.txt"));
     
-    // start NetworkTables
+    // Start the NetworkTables instance
     NetworkTableInstance ntinst = NetworkTableInstance.getDefault();
     if (server) {
       System.out.println("Setting up NetworkTables server");
@@ -236,7 +236,7 @@ public final class Main {
       ntinst.startClientTeam(team);
     }
 
-    table = ntinst.getTable("PipelineValues");
+    table = ntinst.getTable("TrackingValues");
     // start cameras
     List<VideoSource> cameras = new ArrayList<>();
     for (CameraConfig cameraConfig : cameraConfigs) {
@@ -247,8 +247,14 @@ public final class Main {
     if (cameras.size() >= 1) {
       VisionThread visionThread = new VisionThread(cameras.get(0), new ObjectTracking(), pipeline -> {
         if (!pipeline.filterContoursOutput().isEmpty()) {
+          //Reset emptyCount
+          emptyCount = 0;
+
+          //Object tracking
           Rect cameraFOV = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
           Imgproc.circle(pipeline.maskOutput(), new Point(cameraFOV.x, cameraFOV.y), cameraFOV.width / 2, new Scalar(255, 0, 0));
+          
+          //Syncronized link
           synchronized (imgLock) {
             centerX = cameraFOV.x + (cameraFOV.width / 2);                   
             NetworkTableEntry target = table.getEntry("CenterX");
@@ -264,11 +270,11 @@ public final class Main {
           }
         }
         else {
-          //Increaes the empty count
+          //Increases the empty count
           emptyCount++;
 
           //Sets the value of the NetwtorkTable Entry
-          NetworkTableEntry empty = table.getEntry("empty");
+          NetworkTableEntry empty = table.getEntry("Empty");
           empty.setDouble( (double)emptyCount );
         }
         /*else {
