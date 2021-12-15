@@ -88,10 +88,14 @@ public final class Main {
 
   private static NetworkTable table;
 
-  //private static int count;
-  private static int emptyCount = 0;
+  private static double emptyCount = 0;
 
+  /**
+   * Constructor
+   */
   private Main() {
+    //Resets the variables
+    emptyCount = 0;
   }
 
   /**
@@ -246,6 +250,9 @@ public final class Main {
     // start image processing on camera 0 if present
     if (cameras.size() >= 1) {
       VisionThread visionThread = new VisionThread(cameras.get(0), new ObjectTracking(), pipeline -> {
+        NetworkTableEntry isEmpty = table.getEntry("IsEmpty");
+        isEmpty.setBoolean(pipeline.filterContoursOutput().isEmpty());
+
         if (!pipeline.filterContoursOutput().isEmpty()) {
           //Reset emptyCount
           emptyCount = 0;
@@ -258,7 +265,7 @@ public final class Main {
           synchronized (imgLock) {
             centerX = cameraFOV.x + (cameraFOV.width / 2);                   
             NetworkTableEntry target = table.getEntry("CenterX");
-            target.setDouble(centerX);
+            target.setDouble( centerX );
             pipeline.filterContoursOutput().clear();
             /*try {
               writer.write("CenterX : " + centerX + ", Count : " + pipeline.findContoursOutput().size() + "\n");
@@ -275,7 +282,7 @@ public final class Main {
 
           //Sets the value of the NetwtorkTable Entry
           NetworkTableEntry empty = table.getEntry("Empty");
-          empty.setDouble( (double)emptyCount );
+          empty.setDouble( emptyCount );
         }
         /*else {
           try {
