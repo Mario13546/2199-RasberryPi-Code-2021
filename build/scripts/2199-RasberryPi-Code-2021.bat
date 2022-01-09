@@ -1,7 +1,7 @@
 @if "%DEBUG%" == "" @echo off
 @rem ##########################################################################
 @rem
-@rem  2199 RasberryPi Code startup script for Windows
+@rem  2199-RasberryPi-Code-2021 startup script for Windows
 @rem
 @rem ##########################################################################
 
@@ -13,7 +13,7 @@ if "%DIRNAME%" == "" set DIRNAME=.
 set APP_BASE_NAME=%~n0
 set APP_HOME=%DIRNAME%..
 
-@rem Add default JVM options here. You can also use JAVA_OPTS and 2199_RASBERRY_PI_CODE_OPTS to pass JVM options to this script.
+@rem Add default JVM options here. You can also use JAVA_OPTS and 2199_RASBERRY_PI_CODE_2021_OPTS to pass JVM options to this script.
 set DEFAULT_JVM_OPTS=
 
 @rem Find java.exe
@@ -63,19 +63,19 @@ set CMD_LINE_ARGS=%*
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\2199 RasberryPi Code-all.jar
+set CLASSPATH=%APP_HOME%\lib\2199-RasberryPi-Code-2021.jar;%APP_HOME%\lib\gson-2.8.5.jar;%APP_HOME%\lib\wpiutil.jar;%APP_HOME%\lib\ntcore.jar;%APP_HOME%\lib\cscore.jar;%APP_HOME%\lib\cameraserver.jar;%APP_HOME%\lib\opencv-344.jar;%APP_HOME%\lib\wpilibj.jar;%APP_HOME%\lib\wpiHal.jar
 
-@rem Execute 2199 RasberryPi Code
-"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %2199_RASBERRY_PI_CODE_OPTS%  -jar "%CLASSPATH%" %CMD_LINE_ARGS%
+@rem Execute 2199-RasberryPi-Code-2021
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %2199_RASBERRY_PI_CODE_2021_OPTS%  -classpath "%CLASSPATH%" Main %CMD_LINE_ARGS%
 
 :end
 @rem End local scope for the variables with windows NT shell
 if "%ERRORLEVEL%"=="0" goto mainEnd
 
 :fail
-rem Set variable 2199_RASBERRY_PI_CODE_EXIT_CONSOLE if you need the _script_ return code instead of
+rem Set variable 2199_RASBERRY_PI_CODE_2021_EXIT_CONSOLE if you need the _script_ return code instead of
 rem the _cmd.exe /c_ return code!
-if  not "" == "%2199_RASBERRY_PI_CODE_EXIT_CONSOLE%" exit 1
+if  not "" == "%2199_RASBERRY_PI_CODE_2021_EXIT_CONSOLE%" exit 1
 exit /b 1
 
 :mainEnd
